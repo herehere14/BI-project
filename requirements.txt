@@ -1,0 +1,18 @@
+fastapi==0.111.0
+uvicorn[standard]==0.29.0
+SQLAlchemy[asyncio]==2.0.30
+asyncpg==0.29.0
+pydantic-settings==2.2.1
+redis==5.0.4
+celery==5.3.6
+openai==1.30.5
+httpx==0.27.0
+python-dotenv==1.0.1
+# ─── Auth / security ────────────────────────────────────────────────────────────
+passlib[bcrypt]==1.7.4          # password hashing
+python-jose[cryptography]==3.3.0  # JWT encode/decode
+python-multipart==0.0.9         # form-data parsing (FastAPI uploads)
+email-validator==2.1.0.post1    # nicer email validation helper
+bcrypt==3.2.2        # last version that still exposes __about__.__version__
+# -- or --
+bcrypt<4.1           # any 4.0.x also still works

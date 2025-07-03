@@ -1,0 +1,23 @@
+{
+    "compilerOptions": {
+      /* Node/React defaults */
+      "target": "ES2022",
+      "module": "ESNext",
+      "moduleResolution": "Node",
+      "lib": ["DOM", "ES2022"],
+      "jsx": "react-jsx",
+  
+      /* Paths so “../../types” etc. work out of the box */
+      "baseUrl": "./src",
+      "paths": {
+        "~/*": ["*"]
+      },
+  
+      "allowSyntheticDefaultImports": true,
+      "esModuleInterop": true,
+      "strict": true,
+      "skipLibCheck": true
+    },
+    "include": ["src"]
+  }
+  

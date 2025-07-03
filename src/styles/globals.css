@@ -1,0 +1,167 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* -------------------------------------------------------------------------- */
+/*  Base layer – colour tokens, reset, global tweaks                          */
+/* -------------------------------------------------------------------------- */
+@layer base {
+  :root {
+    /* Core colors – professional dark theme */
+    --background: 10 14 26;           /* #0A0E1A */
+    --foreground: 228 230 235;        /* #E4E6EB */
+
+    --card: 20 25 35;                 /* #141923 */
+    --card-foreground: 228 230 235;
+
+    --popover: 28 35 50;              /* #1C2332 */
+    --popover-foreground: 228 230 235;
+
+    --primary: 0 163 255;             /* #00A3FF */
+    --primary-foreground: 255 255 255;
+
+    --secondary: 42 49 66;            /* #2A3142 */
+    --secondary-foreground: 228 230 235;
+
+    --muted: 42 49 66;                /* #2A3142 */
+    --muted-foreground: 139 146 168;  /* #8B92A8 */
+
+    --accent: 0 255 136;              /* #00FF88 */
+    --accent-foreground: 0 0 0;
+
+    --destructive: 255 59 59;         /* #FF3B3B */
+    --destructive-foreground: 255 255 255;
+
+    --warning: 255 184 0;             /* #FFB800 */
+    --warning-foreground: 0 0 0;
+
+    --border: 42 49 66;               /* #2A3142 */
+    --input: 42 49 66;
+    --ring: 0 163 255;
+
+    --radius: 0.5rem;
+
+    /* Chart palette */
+    --chart-1: 0 255 136;             /* Green   */
+    --chart-2: 0 163 255;             /* Blue    */
+    --chart-3: 255 184 0;             /* Amber   */
+    --chart-4: 139 92 246;            /* Purple  */
+    --chart-5: 255 59 59;             /* Red     */
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    min-height: 100vh;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar       { @apply w-2 h-2; }
+  ::-webkit-scrollbar-track { @apply bg-background; }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-border rounded-full;
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+  ::-webkit-scrollbar-thumb:hover { @apply bg-muted-foreground; }
+
+  /* Text selection */
+  ::selection { @apply bg-primary/30 text-foreground; }
+}
+
+/* -------------------------------------------------------------------------- */
+/*  Component layer – reusable classes                                        */
+/* -------------------------------------------------------------------------- */
+@layer components {
+  /* Card / panel */
+  .panel {
+    @apply bg-card border border-border rounded-lg shadow-sm transition-all duration-200 hover:shadow-md;
+  }
+
+  /* Metric card */
+  .metric-card {
+    @apply bg-card p-4 border border-border/20 rounded-lg cursor-pointer transition-all duration-200 hover:bg-popover hover:shadow-lg hover:-translate-y-0.5;
+  }
+
+  /* Severity dots (alerts) */
+  .severity-dot      { @apply w-2 h-2 rounded-full animate-pulse; }
+  .severity-critical { @apply bg-destructive shadow-[0_0_8px_rgb(255_59_59/0.5)]; }
+  .severity-warning  { @apply bg-warning    shadow-[0_0_8px_rgb(255_184_0/0.5)]; }
+  .severity-info     { @apply bg-primary    shadow-[0_0_8px_rgb(0_163_255/0.5)]; }
+
+  /* Buttons */
+  .btn          { @apply px-4 py-2 text-sm font-medium rounded-md transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-50 disabled:pointer-events-none; }
+  .btn-primary  { @apply bg-primary    text-primary-foreground  hover:bg-primary/90   shadow-sm hover:shadow-md; }
+  .btn-danger   { @apply bg-destructive text-destructive-foreground hover:bg-destructive/90; }
+  .btn-warning  { @apply bg-warning    text-warning-foreground   hover:bg-warning/90; }
+  .btn-ghost    { @apply bg-transparent text-muted-foreground hover:bg-secondary hover:text-foreground border border-border hover:border-primary/50; }
+
+  /* Inputs */
+  .input {
+    @apply bg-background border border-input px-3 py-2 text-sm rounded-md placeholder:text-muted-foreground/50 focus:placeholder:text-transparent focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all duration-200 file:border-0 file:bg-transparent;
+  }
+
+  /* Data grid */
+  .data-grid { @apply grid gap-0.5 bg-border/20 rounded-lg overflow-hidden; }
+  .data-cell { @apply bg-card p-3 text-sm flex items-center; }
+
+  /* Chart container */
+  .chart-container { @apply relative w-full h-full min-h-[250px] bg-card rounded-lg p-4; }
+
+  /* Live pulse dot */
+  .live-dot { @apply inline-block w-2 h-2 bg-accent rounded-full animate-pulse shadow-[0_0_6px_rgb(0_255_136/0.7)]; }
+
+  /* Simple flash animation */
+  @keyframes flash {
+    0%,100% { @apply bg-transparent; }
+    50%     { @apply bg-primary/30;   }
+  }
+
+  /* Ticker tape */
+  .ticker-tape {
+    @apply fixed bottom-0 left-0 right-0 h-8 flex items-center overflow-hidden bg-background/95 backdrop-blur-sm border-t border-border/50 text-xs text-muted-foreground z-50;
+  }
+  .ticker-content { @apply inline-flex items-center gap-8 whitespace-nowrap animate-scroll; }
+}
+
+/* -------------------------------------------------------------------------- */
+/*  Utility layer – small helpers & dashboard grid                            */
+/* -------------------------------------------------------------------------- */
+@layer utilities {
+  .text-balance { text-wrap: balance; }
+  .text-pretty  { text-wrap: pretty;  }
+
+  /* Dashboard master grid */
+  .dashboard-grid {
+    display: grid;
+    grid-template-columns: 300px minmax(0, 1fr) 400px;  /* <<< fixed */
+    grid-template-rows: auto 1fr auto;
+    gap: 1px;
+    height: 100vh;
+    @apply bg-border/50;
+  }
+
+  @media (max-width: 1280px) {
+    .dashboard-grid { grid-template-columns: 260px minmax(0, 1fr); }
+  }
+  @media (max-width: 768px) {
+    .dashboard-grid {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto auto 1fr auto;
+    }
+  }
+
+  /* Fade-in helper */
+  .animate-fade-in { animation: fadeIn 0.3s ease-out; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+  /* Scroll snap helpers */
+  .snap-x-mandatory { scroll-snap-type: x mandatory; }
+  .snap-center      { scroll-snap-align: center; }
+}
